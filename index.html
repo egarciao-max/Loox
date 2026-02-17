@@ -31,86 +31,7 @@
             flex-direction: column;
         }
 
-        /* --- Global Elements --- */
-        .screen { 
-            position: absolute; inset: 0; 
-            display: none; flex-direction: column; 
-            background: var(--bg);
-            animation: fadeIn 0.3s ease;
-        }
         .screen.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .scroll-area { flex: 1; overflow-y: auto; padding: 20px 20px 100px; }
-        .btn-primary { 
-            background: var(--accent); color: white; border: none; 
-            padding: 16px; border-radius: 14px; font-weight: 700; 
-            font-family: 'Syne'; cursor: pointer; transition: 0.2s;
-        }
-        .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
-
-        /* --- Auth Screen --- */
-        #auth-screen { 
-            justify-content: center; padding: 40px;
-            background: radial-gradient(circle at top right, #1e0b3b, var(--bg));
-        }
-        .logo-area { text-align: center; margin-bottom: 40px; }
-        .logo-m { 
-            width: 70px; height: 70px; background: linear-gradient(135deg, var(--accent), #C026D3);
-            border-radius: 20px; display: flex; align-items: center; justify-content: center;
-            font-size: 32px; font-weight: 800; font-family: 'Syne'; margin: 0 auto 15px;
-            box-shadow: 0 10px 30px var(--accent-glow);
-        }
-        .auth-tabs { display: flex; background: #000; padding: 4px; border-radius: 12px; margin-bottom: 20px; }
-        .tab { 
-            flex: 1; padding: 10px; text-align: center; font-size: 12px; font-weight: 700; 
-            color: var(--muted); cursor: pointer; border-radius: 8px; 
-        }
-        .tab.active { background: var(--accent); color: white; }
-        input { 
-            width: 100%; background: var(--bg-card); border: 1px solid var(--border); 
-            padding: 16px; border-radius: 12px; color: white; margin-bottom: 12px; outline: none;
-        }
-
-        /* --- Dashboard --- */
-        .header { padding-top: 40px; margin-bottom: 20px; }
-        .title { font-family: 'Syne'; font-size: 28px; font-weight: 800; }
-        .xp-card { 
-            background: linear-gradient(135deg, #1e1e35, #08080f); 
-            padding: 20px; border-radius: 20px; border: 1px solid var(--border);
-        }
-        .progress-bg { height: 8px; background: #000; border-radius: 4px; margin: 12px 0; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 1s ease; }
-
-        /* --- Community Feed --- */
-        .post { background: var(--bg-card); border: 1px solid var(--border); padding: 16px; border-radius: 16px; margin-bottom: 12px; }
-        .post-user { color: var(--accent); font-weight: 700; font-size: 12px; margin-bottom: 4px; }
-        .fab { 
-            position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px;
-            background: var(--accent); border-radius: 30px; border: none; color: white;
-            font-size: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer;
-        }
-
-        /* --- AI Chat --- */
-        .chat-msg { padding: 12px 16px; border-radius: 16px; max-width: 80%; margin-bottom: 10px; font-size: 14px; line-height: 1.5; }
-        .chat-ai { background: var(--bg-card); border: 1px solid var(--border); align-self: flex-start; }
-        .chat-user { background: var(--accent); align-self: flex-end; }
-        .input-bar { 
-            background: var(--bg-card); padding: 15px; display: flex; gap: 10px;
-            border-top: 1px solid var(--border); padding-bottom: calc(90px + env(safe-area-inset-bottom));
-        }
-
-        /* --- Navigation --- */
-        nav { 
-            position: fixed; bottom: 0; width: 100%; height: 80px;
-            background: rgba(15, 15, 26, 0.95); backdrop-filter: blur(10px);
-            display: none; justify-content: space-around; align-items: center;
-            border-top: 1px solid var(--border); z-index: 100;
-        }
-        .nav-item { text-align: center; color: var(--muted); cursor: pointer; transition: 0.2s; }
-        .nav-item.active { color: var(--accent); transform: translateY(-2px); }
-        .nav-icon { font-size: 22px; display: block; }
-        .nav-label { font-size: 10px; font-weight: 700; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -130,74 +51,28 @@
         <p id="auth-error" style="color:var(--error); font-size:12px; text-align:center; margin-top:15px;"></p>
     </div>
 
-    <div id="screen-home" class="screen">
-        <div class="scroll-area">
-            <div class="header">
-                <p class="title">DASHBOARD</p>
-                <p style="color:var(--muted)">Your evolution status.</p>
-            </div>
-            <div class="xp-card">
-                <p style="font-family:'Syne'; font-weight:800; font-size:14px;">LEVEL <span id="user-level">1</span></p>
-                <div class="progress-bg"><div id="xp-bar" class="progress-fill"></div></div>
-                <p style="color:var(--muted); font-size:11px;"><span id="user-xp">0</span> / 500 XP TO NEXT LEVEL</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="screen-squad" class="screen">
-        <div class="scroll-area">
-            <div class="header"><p class="title">SQUAD</p></div>
-            <div id="feed-container"></div>
-        </div>
-        <button class="fab" onclick="showPostPopup()">+</button>
-    </div>
-
-    <div id="screen-coach" class="screen">
-        <div class="header" style="padding: 40px 20px 10px;"><p class="title">MAX AI</p></div>
-        <div id="chat-container" class="scroll-area" style="display:flex; flex-direction:column;">
-            <div class="chat-msg chat-ai">I am Max. State your objective.</div>
-        </div>
-        <div class="input-bar">
-            <input type="text" id="ai-input" placeholder="Message Coach..." style="margin:0">
-            <button onclick="askAI()" style="background:var(--accent); border:none; color:white; padding:0 15px; border-radius:10px; font-weight:bold">SEND</button>
-        </div>
-    </div>
-
-    <nav id="global-nav">
-        <div class="nav-item active" onclick="navigate('screen-home', this)">
-            <span class="nav-icon">🏠</span><span class="nav-label">HOME</span>
-        </div>
-        <div class="nav-item" onclick="navigate('screen-squad', this)">
-            <span class="nav-icon">🌍</span><span class="nav-label">SQUAD</span>
-        </div>
-        <div class="nav-item" onclick="navigate('screen-coach', this)">
-            <span class="nav-icon">🧠</span><span class="nav-label">COACH</span>
-        </div>
-    </nav>
-
     <script>
-        // --- 1. CONFIGURATION ---
         const CONFIG = {
             SB_URL: "https://njulviuanxgyvrkwwwfi.supabase.co",
             SB_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5qdWx2aXVhbnhneXZya3d3d2ZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMDEwNDgsImV4cCI6MjA4Njg3NzA0OH0.Y7g2RNsnM68Phv6yB7ZrXjJljW88LTUzuiqveDzW6G4",
-            AI_KEY: "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"
         };
 
         let supabase;
-        let currentUser = null;
         let isLogin = true;
 
-        // --- 2. INITIALIZATION ---
         window.onload = () => {
             try {
-                if(window.supabase) {
+                if (window.supabase) {
                     supabase = window.supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
                     console.log("System Online");
+                } else {
+                    console.error("Supabase library not loaded.");
                 }
-            } catch(e) { console.error("Library load error"); }
+            } catch (e) {
+                console.error("Initialization error: ", e);
+            }
         };
 
-        // --- 3. AUTH LOGIC ---
         function toggleAuthMode(mode) {
             isLogin = mode;
             document.getElementById('tab-login').classList.toggle('active', mode);
@@ -209,7 +84,11 @@
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
             const err = document.getElementById('auth-error');
-            if(!email || !pass) return;
+            
+            if (!email || !pass) {
+                err.innerText = "Email and password are required!";
+                return;
+            }
 
             err.innerText = "Synchronizing...";
             try {
@@ -217,89 +96,17 @@
                     ? await supabase.auth.signInWithPassword({ email, password: pass })
                     : await supabase.auth.signUp({ email, password: pass });
 
-                if(res.error) throw res.error;
-                currentUser = res.data.user;
-                setupProfile();
-                enterApp();
-            } catch(e) { err.innerText = e.message; }
-        }
+                if (res.error) {
+                    throw res.error;
+                }
 
-        // --- 4. NAVIGATION ---
-        function navigate(id, el) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            if(id === 'screen-squad') loadSquadPosts();
-        }
-
-        function enterApp() {
-            document.getElementById('screen-auth').classList.remove('active');
-            document.getElementById('screen-home').classList.add('active');
-            document.getElementById('global-nav').style.display = 'flex';
-        }
-
-        // --- 5. XP & PROFILE ---
-        function setupProfile() {
-            let xp = 340; // Default or fetched from DB
-            document.getElementById('user-xp').innerText = xp;
-            document.getElementById('xp-bar').style.width = (xp/500 * 100) + "%";
-        }
-
-        // --- 6. SQUAD / COMMUNITY ---
-        async function loadSquadPosts() {
-            const feed = document.getElementById('feed-container');
-            const { data, error } = await supabase.from('community_posts').select('*').order('created_at', {ascending: false});
-            
-            if(error) { feed.innerHTML = "Offline Connection Only."; return; }
-            feed.innerHTML = data.map(p => `
-                <div class="post">
-                    <div class="post-user">@${p.username || 'user'}</div>
-                    <div class="post-body">${p.content}</div>
-                </div>
-            `).join('');
-        }
-
-        async function showPostPopup() {
-            const msg = prompt("What is your update?");
-            if(!msg) return;
-            await supabase.from('community_posts').insert([{ 
-                user_id: currentUser.id, 
-                username: currentUser.email.split('@')[0], 
-                content: msg 
-            }]);
-            loadSquadPosts();
-        }
-
-        // --- 7. AI COACH ---
-        async function askAI() {
-            const input = document.getElementById('ai-input');
-            const container = document.getElementById('chat-container');
-            const text = input.value;
-            if(!text) return;
-
-            container.innerHTML += `<div class="chat-msg chat-user">${text}</div>`;
-            input.value = "";
-            container.scrollTop = container.scrollHeight;
-
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${CONFIG.AI_KEY}` },
-                    body: JSON.stringify({
-                        model: "gpt-3.5-turbo",
-                        messages: [{role: "system", content: "You are MAX, a high-performance elite coach. Keep responses under 2 sentences."}, {role: "user", content: text}]
-                    })
-                });
-                const data = await response.json();
-                const reply = data.choices[0].message.content;
-                container.innerHTML += `<div class="chat-msg chat-ai">${reply}</div>`;
-                container.scrollTop = container.scrollHeight;
-            } catch(e) {
-                container.innerHTML += `<div class="chat-msg chat-ai">Connection to Max Coach lost.</div>`;
+                console.log("Authentication successful", res);
+                err.innerText = ""; // Clear errors
+            } catch (e) {
+                console.error("Authentication error: ", e);
+                err.innerText = e.message || "An unknown error occurred.";
             }
         }
     </script>
 </body>
 </html>
-
